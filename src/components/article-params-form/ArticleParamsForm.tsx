@@ -49,16 +49,6 @@ export const ArticleParamsForm = ({ onApply }: Props) => {
 		setIsOpen((prev) => !prev);
 	}
 
-	const handleApply = () => {
-		onApply({
-			'font-family': selectedFont?.value || '',
-			'font-size': selectedFontSize?.value || '',
-			'font-color': selectedColor?.value || '',
-			'background-color': selectedBg?.value || '',
-			'container-width': selectedWidth?.value || '',
-		});
-	};
-
 	useOutsideClickClose({
 		isOpen: open,
 		rootRef: asideRef,
@@ -72,7 +62,18 @@ export const ArticleParamsForm = ({ onApply }: Props) => {
 			<aside
 				ref={asideRef}
 				className={clsx(styles.container, { [styles.container_open]: open })}>
-				<form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+				<form
+					className={styles.form}
+					onSubmit={(e) => {
+						e.preventDefault();
+						onApply({
+							'--font-family': selectedFont?.value || '',
+							'--font-size': selectedFontSize?.value || '',
+							'--font-color': selectedColor?.value || '',
+							'--container-width': selectedWidth?.value || '',
+							'--bg-color': selectedBg?.value || '',
+						});
+					}}>
 					<Text size={31} weight={800} uppercase={true}>
 						Задайте параметры
 					</Text>
@@ -120,11 +121,11 @@ export const ArticleParamsForm = ({ onApply }: Props) => {
 							type='clear'
 							onClick={() => {
 								const defaultStyles = {
-									'font-family': defaultArticleState.fontFamilyOption.value,
-									'font-size': defaultArticleState.fontSizeOption.value,
-									'font-color': defaultArticleState.fontColor.value,
-									'background-color': defaultArticleState.backgroundColor.value,
-									'container-width': defaultArticleState.contentWidth.value,
+									'--font-family': defaultArticleState.fontFamilyOption.value,
+									'--font-size': defaultArticleState.fontSizeOption.value,
+									'--font-color': defaultArticleState.fontColor.value,
+									'--container-width': defaultArticleState.contentWidth.value,
+									'--bg-color': defaultArticleState.backgroundColor.value,
 								};
 
 								setSelectedFont(defaultArticleState.fontFamilyOption);
@@ -137,12 +138,7 @@ export const ArticleParamsForm = ({ onApply }: Props) => {
 							}}
 						/>
 
-						<Button
-							title='Применить'
-							htmlType='submit'
-							type='apply'
-							onClick={handleApply}
-						/>
+						<Button title='Применить' htmlType='submit' type='apply' />
 					</div>
 				</form>
 			</aside>

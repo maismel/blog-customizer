@@ -14,20 +14,15 @@ const root = createRoot(domNode);
 
 const App = () => {
 	const [articleStyles, setArticleStyles] = useState({
-		fontFamily: defaultArticleState.fontFamilyOption.value,
-		fontSize: defaultArticleState.fontSizeOption.value,
-		fontColor: defaultArticleState.fontColor.value,
-		contentWidth: defaultArticleState.contentWidth.value,
-		backgroundColor: defaultArticleState.backgroundColor.value,
+		'--font-family': defaultArticleState.fontFamilyOption.value,
+		'--font-size': defaultArticleState.fontSizeOption.value,
+		'--font-color': defaultArticleState.fontColor.value,
+		'--container-width': defaultArticleState.contentWidth.value,
+		'--bg-color': defaultArticleState.backgroundColor.value,
 	});
 
 	const applyStyles = (newStyles: Partial<typeof articleStyles>) => {
 		setArticleStyles((prev) => ({ ...prev, ...newStyles }));
-
-		// Установка CSS-переменных
-		Object.entries(newStyles).forEach(([key, value]) => {
-			document.documentElement.style.setProperty(`--${key}`, value);
-		});
 	};
 
 	return (
