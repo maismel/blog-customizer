@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import clsx from 'clsx';
+import { useOutsideClickClose } from 'src/ui/select/hooks/useOutsideClickClose';
 
 import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
 import { Select } from 'src/ui/select';
 import { RadioGroup } from 'src/ui/radio-group';
 import { Separator } from 'src/ui/separator';
+import { Text } from 'src/ui/text';
 
 import styles from './ArticleParamsForm.module.scss';
 import {
@@ -41,6 +43,8 @@ export const ArticleParamsForm = ({ onApply }: Props) => {
 		defaultArticleState.contentWidth
 	);
 
+	const asideRef = useRef<HTMLElement | null>(null);
+
 	function handleToggle() {
 		setIsOpen((prev) => !prev);
 	}
@@ -55,12 +59,24 @@ export const ArticleParamsForm = ({ onApply }: Props) => {
 		});
 	};
 
+	useOutsideClickClose({
+		isOpen: open,
+		rootRef: asideRef,
+		onClose: () => setIsOpen(false),
+		onChange: setIsOpen,
+	});
+
 	return (
 		<>
 			<ArrowButton isOpen={open} onClick={handleToggle} />
 			<aside
+				ref={asideRef}
 				className={clsx(styles.container, { [styles.container_open]: open })}>
 				<form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+					<Text size={31} weight={800} uppercase={true}>
+						Задайте параметры
+					</Text>
+
 					<Select
 						selected={selectedFont}
 						options={fontFamilyOptions}
